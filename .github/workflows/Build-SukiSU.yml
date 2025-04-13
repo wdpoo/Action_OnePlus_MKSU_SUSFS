@@ -9,7 +9,7 @@ on:
       FEIL:
         description: "配置文件"
         required: true
-        default: 'oneplus_ace3_pro_v'
+        default: 'gt5pro'
       CPUD:
         description: "处理器代号"
         required: true
@@ -25,7 +25,7 @@ on:
       KERNEL_NAME:
         description: "修改内核名称"
         required: true
-        default: '-android14-11-o-g1132d864665d'
+        default: '-android14-11-o-20250413-wdpoo'
       kernelsu_variant:
         description: "选择 KSU"
         required: true
@@ -158,6 +158,20 @@ jobs:
           #  cp ../../SukiSU_patch/other/lz4k_patch/${{ github.event.inputs.KERNEL_VERSION }}/lz4kd.patch ./
           #  patch -p1 -F 3 < lz4kd.patch || true
           #fi
+
+
+      - name: Apply  Other Patches
+        run: |
+          cd kernel_workspace/kernel_platform/common
+          git clone https://github.com/WDGPKii/Action_gt5p_MKSU_SUSFS.git
+          ls
+          cp ./Action_gt5p_MKSU_SUSFS/patch/001-lz4.patch ./
+          cp ./Action_gt5p_MKSU_SUSFS/patch/002-zstd.patch ./
+          
+          echo "正在打其他补丁"
+          patch -p1 < 001-lz4.patch
+          patch -p1 < 002-zstd.patch
+          echo "完成"
 
       - name: Add SUSFS Configuration Settings
         run: |
